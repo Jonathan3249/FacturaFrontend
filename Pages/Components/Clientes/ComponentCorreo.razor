@@ -1,0 +1,41 @@
+﻿@page "/Clientes/TipoClientes"
+@using Factura.Models
+@inject HttpClient Http
+
+<h3>Tipo de Clientes</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Descripcion</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in tipoCliente)
+        {
+
+
+            <tr>
+
+                <td>
+                    @item?.idTipoCliente
+                </td>
+                <td>
+                    @item?.descripcionTipo
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    public List<TipoClientesView>? tipoCliente { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipoCliente = await Http.GetFromJsonAsync<List<TipoClientesView>>("api/TipoClientes/ListaTipoClientes");
+    }
+}

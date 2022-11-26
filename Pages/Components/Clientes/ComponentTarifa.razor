@@ -1,0 +1,47 @@
+﻿@page "/Clientes/Tarifas"
+@using Factura.Models
+@inject HttpClient Http
+
+<h3>Tarifa</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Tipo de Tarifa</th>
+            <th>Precio</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in tarifa)
+        {
+
+
+            <tr>
+
+                <td>
+                    @item?.idTarifa
+                </td>
+                <td>
+                    @item?.tipoTarifa
+                </td>
+                <td>
+                    @item?.precio
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@code {
+
+    public List<Tarifa>? tarifa { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        tarifa = await Http.GetFromJsonAsync<List<Tarifa>>("api/Tarifas/ListaTarifas");
+    }
+}

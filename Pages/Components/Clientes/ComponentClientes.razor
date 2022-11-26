@@ -1,0 +1,84 @@
+﻿@page "/Clientes"
+@using Factura.Models
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+
+<h3>Clientes</h3>
+
+@if(clientes == null)
+{
+    <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+}
+
+else
+{
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-primary" type="button" @onclick="OnInitializedAsync">Buscar</button>
+        </div>
+        <input @bind="datos" type="text"  class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Correo</th>
+                <th>Nombre</th>
+                <th>Contador</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in clientes)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-success" href="Clientes/Consulta/@item.idCliente">>></a>
+                    </td>
+                    <td>
+                        @item.correo
+                    </td>
+                    <td>
+                        @item.nombreCompleto
+                    </td>
+                    <td>
+                        @item.numeroContador
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    
+    
+}
+
+@code {
+    
+    public string? datos = "";
+
+    public List<Clientes>? clientes { get; set; }
+  
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (datos == "")
+        {
+            clientes = await Http.GetFromJsonAsync<List<Clientes>>("api/Clientes/ListaCliente");
+        
+
+        } 
+        else{
+
+            clientes = await Http.GetFromJsonAsync<List<Clientes>>($"api/Clientes/Clientes/{datos}");
+
+        }
+
+
+    }
+
+   
+
+   
+
+}
